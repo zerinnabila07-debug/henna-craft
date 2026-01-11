@@ -44,7 +44,7 @@ export default function BookingModal({ isOpen, onClose }) {
 
         <div className="text-center mb-8">
           <h2 className="serif-heading text-3xl font-bold text-[#b38b59] mb-2">Book Your Appointment</h2>
-          <p className="text-[#8B7355]">Fill in your details and we'll get back to you shortly</p>
+          <p className="text-[#8B7355]">Fill in your details and we&apos;ll get back to you shortly</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-8">
