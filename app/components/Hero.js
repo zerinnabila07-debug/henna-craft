@@ -31,9 +31,16 @@ export default function Hero() {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-transparent rounded-full mb-10 border border-[#b38b59]/40">
+        <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-transparent rounded-full mb-6 border border-[#b38b59]/40">
           <Sparkles className="text-[#b38b59]" size={18} />
           <span className="text-[#b38b59] font-normal text-sm tracking-wide">Premium Henna Artistry</span>
+        </div>
+
+        <div className="inline-flex items-center gap-2 px-6 py-3 bg-[#1a1a1a]/80 backdrop-blur-sm rounded-full mb-10 border border-[#b38b59]/40 shadow-lg">
+          <span className="text-2xl">🌿</span>
+          <span className="text-[#b38b59] font-semibold text-sm sm:text-base">
+            100% Organic & Chemical-Free Henna - Safe for All Skin Types
+          </span>
         </div>
         
         <h1 className="serif-heading text-4xl md:text-6xl font-black text-[#b38b59] mb-10 leading-tight tracking-tight min-h-[120px] md:min-h-[180px]">
