@@ -2,9 +2,12 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X } from 'lucide-react';
 
 export default function Gallery({ onBookNowClick }) {
   const [activeCategory, setActiveCategory] = useState('All');
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const allImages = [
     { id: 1, category: 'Bridal', src: '/gallery/bridal.jpg', title: 'Bridal Design 1' },
@@ -35,6 +38,19 @@ export default function Gallery({ onBookNowClick }) {
     ? allImages 
     : allImages.filter(img => img.category === activeCategory);
 
+  const handleImageClick = (image) => {
+    setSelectedImage(image);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedImage(null);
+  };
+
+  const handleBookNowFromModal = () => {
+    setSelectedImage(null);
+    onBookNowClick();
+  };
+
   return (
     <section id="gallery" className="py-20 relative bg-[#0a0a0a]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -61,31 +77,30 @@ export default function Gallery({ onBookNowClick }) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {filteredImages.map((image) => (
-            <div
+            <motion.div
               key={image.id}
-              className="group relative aspect-square rounded-xl overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_rgba(179,139,89,0.4)] cursor-pointer"
+              layout
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.3 }}
+              onClick={() => handleImageClick(image)}
+              className="group relative aspect-square rounded-xl overflow-hidden cursor-pointer border-2 border-[#b38b59]/20 hover:border-[#b38b59]/60 transition-all duration-300"
             >
               <Image
                 src={image.src}
                 alt={image.title}
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-500"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
               />
               
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/95 via-[#0a0a0a]/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-end p-6">
-                <p className="text-lg font-semibold text-[#b38b59] mb-2">{image.title}</p>
-                <p className="text-xs text-[#8B7355] mb-4">{image.category} Collection</p>
-                <button 
-                  onClick={onBookNowClick}
-                  className="px-6 py-2 bg-[#b38b59] text-black rounded-full font-semibold hover:bg-[#d4af6a] transition text-sm"
-                >
-                  Book Now
-                </button>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-4">
+                <p className="text-sm font-semibold text-[#b38b59]">{image.title}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
@@ -95,6 +110,66 @@ export default function Gallery({ onBookNowClick }) {
           </div>
         )}
       </div>
+
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4"
+            onClick={handleCloseModal}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ duration: 0.3, type: "spring", damping: 25 }}
+              className="relative max-w-4xl w-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={handleCloseModal}
+                className="absolute -top-12 right-0 w-10 h-10 flex items-center justify-center bg-[#b38b59] text-black rounded-full hover:bg-[#d4af6a] transition-colors z-10"
+              >
+                <X size={24} />
+              </button>
+
+              <div className="relative w-full aspect-square md:aspect-[4/5] rounded-2xl overflow-hidden border-4 border-[#b38b59]/40">
+                <Image
+                  src={selectedImage.src}
+                  alt={selectedImage.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 80vw"
+                  priority
+                />
+              </div>
+
+              <div className="mt-6 text-center">
+                <h3 className="text-2xl font-bold text-[#b38b59] mb-2">{selectedImage.title}</h3>
+                <p className="text-[#8B7355] mb-6">{selectedImage.category} Collection</p>
+                
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <button
+                    onClick={handleCloseModal}
+                    className="px-8 py-3 bg-[#1a1a1a] text-[#b38b59] border-2 border-[#b38b59]/40 rounded-full font-semibold hover:bg-[#b38b59]/10 transition"
+                  >
+                    Close
+                  </button>
+                  <button
+                    onClick={handleBookNowFromModal}
+                    className="px-8 py-3 bg-[#b38b59] text-black rounded-full font-semibold hover:bg-[#d4af6a] transition"
+                  >
+                    Book Now
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
