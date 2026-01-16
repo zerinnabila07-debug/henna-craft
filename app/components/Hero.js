@@ -60,11 +60,11 @@ export default function Hero() {
           Creating stunning designs for your special moments.
         </p>
         
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <a href="#contact" className="px-10 py-4 bg-[#b38b59] text-black rounded-full font-semibold text-base hover:bg-[#d4af6a] transition-all duration-300 transform hover:scale-105 text-center">
+        <div className="flex flex-col md:flex-row gap-4 justify-center items-stretch md:items-center w-full max-w-md md:max-w-none mx-auto">
+          <a href="#contact" className="w-full md:w-auto px-10 py-4 bg-[#b38b59] text-black rounded-full font-semibold text-base hover:bg-[#d4af6a] transition-all duration-300 transform hover:scale-105 text-center">
             Book Now
           </a>
-          <a href="#gallery" className="px-10 py-4 bg-transparent text-[#b38b59] rounded-full font-semibold text-base hover:bg-[#b38b59]/10 transition-all duration-300 transform hover:scale-105 text-center border-2 border-[#b38b59]">
+          <a href="#gallery" className="w-full md:w-auto px-10 py-4 bg-transparent text-[#b38b59] rounded-full font-semibold text-base hover:bg-[#b38b59]/10 transition-all duration-300 transform hover:scale-105 text-center border-2 border-[#b38b59]">
             View Gallery
           </a>
         </div>
