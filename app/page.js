@@ -15,7 +15,6 @@ import InstagramSection from './components/InstagramSection';
 import BookingModal from './components/BookingModal';
 import Footer from './components/Footer';
 import MobileBottomNav from './components/MobileBottomNav';
-import StickyWhatsApp from './components/StickyWhatsApp';
 import ParallaxBackground from './components/ParallaxBackground';
 import AIChatbot from './components/AIChatbot';
 
@@ -58,7 +57,6 @@ export default function Home() {
         <Footer onBookNowClick={handleBookNowClick} />
       </div>
       <MobileBottomNav />
-      <StickyWhatsApp />
       <AIChatbot />
       <BookingModal isOpen={isBookingModalOpen} onClose={handleCloseModal} />
     </main>

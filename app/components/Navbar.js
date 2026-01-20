@@ -1,6 +1,7 @@
 'use client';
 
 import { Menu, X } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 import { useState } from 'react';
 import Image from 'next/image';
 
@@ -28,6 +29,15 @@ export default function Navbar({ onBookNowClick }) {
             <a href="#home" className="text-[#b38b59] hover:text-[#d4af6a] transition-colors duration-300 font-normal text-base tracking-wide">Home</a>
             <a href="#services" className="text-[#b38b59] hover:text-[#d4af6a] transition-colors duration-300 font-normal text-base tracking-wide">Services</a>
             <a href="#gallery" className="text-[#b38b59] hover:text-[#d4af6a] transition-colors duration-300 font-normal text-base tracking-wide">Gallery</a>
+            <a 
+              href="https://wa.me/8801234567890" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-[#b38b59] hover:text-[#d4af6a] transition-colors duration-300"
+              aria-label="WhatsApp"
+            >
+              <MessageCircle size={22} />
+            </a>
             <button 
               onClick={onBookNowClick}
               className="px-6 py-2 bg-[#b38b59] text-black rounded-full font-semibold text-sm hover:bg-[#d4af6a] transition-all duration-300"
@@ -36,7 +46,16 @@ export default function Navbar({ onBookNowClick }) {
             </button>
           </div>
 
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center gap-4">
+            <a 
+              href="https://wa.me/8801234567890" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-[#b38b59] hover:text-[#d4af6a] transition-colors duration-300"
+              aria-label="WhatsApp"
+            >
+              <MessageCircle size={20} />
+            </a>
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-[#b38b59] hover:text-[#d4af6a] transition-colors duration-300"
