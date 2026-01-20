@@ -262,8 +262,6 @@ export default function AIChatbot() {
 
               <div ref={messagesEndRef} />
             </div>
-
-              </div>
             )}
 
             {!isMinimized && (
@@ -282,7 +280,6 @@ export default function AIChatbot() {
                 ))}
               </div>
             </div>
-
             )}
 
             {!isMinimized && (
