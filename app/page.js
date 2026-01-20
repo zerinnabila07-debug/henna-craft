@@ -1,7 +1,5 @@
 'use client';
 
-'use client';
-
 import { useState } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -19,6 +17,7 @@ import Footer from './components/Footer';
 import MobileBottomNav from './components/MobileBottomNav';
 import StickyWhatsApp from './components/StickyWhatsApp';
 import ParallaxBackground from './components/ParallaxBackground';
+import AIChatbot from './components/AIChatbot';
 
 export default function Home() {
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
@@ -60,6 +59,7 @@ export default function Home() {
       </div>
       <MobileBottomNav />
       <StickyWhatsApp />
+      <AIChatbot />
       <BookingModal isOpen={isBookingModalOpen} onClose={handleCloseModal} />
     </main>
   );
