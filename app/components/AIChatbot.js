@@ -124,7 +124,7 @@ export default function AIChatbot() {
             exit={{ scale: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 z-40 w-16 h-16 bg-gradient-to-br from-[#b38b59] to-[#8B6F47] text-black rounded-full shadow-2xl hover:shadow-[0_0_30px_rgba(179,139,89,0.6)] transition-all duration-300 flex items-center justify-center group"
+            className="fixed bottom-24 md:bottom-6 right-6 z-50 w-16 h-16 bg-gradient-to-br from-[#b38b59] to-[#8B6F47] text-black rounded-full shadow-2xl hover:shadow-[0_0_30px_rgba(179,139,89,0.6)] transition-all duration-300 flex items-center justify-center group"
             aria-label="Open AI Chat"
           >
             <MessageCircle size={28} className="group-hover:scale-110 transition-transform" />
@@ -144,7 +144,7 @@ export default function AIChatbot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 100, scale: 0.8 }}
             transition={{ duration: 0.3, type: 'spring', damping: 25 }}
-            className="fixed bottom-6 right-6 z-50 w-[95vw] sm:w-[400px] h-[600px] max-h-[80vh] bg-[#0a0a0a] border-2 border-[#b38b59]/40 rounded-3xl shadow-2xl flex flex-col overflow-hidden"
+            className="fixed bottom-24 md:bottom-6 right-6 z-50 w-[95vw] sm:w-[400px] h-[600px] max-h-[70vh] md:max-h-[80vh] bg-[#0a0a0a] border-2 border-[#b38b59]/40 rounded-3xl shadow-2xl flex flex-col overflow-hidden"
           >
             <div className="bg-gradient-to-r from-[#b38b59] to-[#8B6F47] p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
