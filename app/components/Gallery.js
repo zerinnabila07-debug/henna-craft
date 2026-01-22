@@ -190,6 +190,6 @@ export default function Gallery({ onBookNowClick }) {
           </motion.div>
         )}
       </AnimatePresence>
-    </section>
+    </>
   );
 }

@@ -2,6 +2,9 @@
 
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
+import ScrollReveal from './ScrollReveal';
+import ParallaxSection from './ParallaxSection';
+import SectionTransition from './SectionTransition';
 
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState(null);
