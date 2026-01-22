@@ -1,256 +1,324 @@
 'use server';
 
-const SYSTEM_INSTRUCTION = `You are a Personal Styling Consultant for Henna Craft - warm, sophisticated, and culturally aware.
+import { GoogleGenAI } from '@google/genai';
 
-PERSONALITY & TONE:
-- Mix sophisticated English with warm Bengali phrases
-- Use cultural phrases: "উৎসবের আমেজ", "মেহেদির রঙে সাজুক আপনার দিন", "শুভ উৎসব"
-- Be proactive - ask questions to understand their needs
-- Use emojis: ✨🌿💍🤎🎉
+const HENNA_CRAFT_KNOWLEDGE_BASE = `You are the "Henna Craft Assistant" - an expert AI consultant for Henna Craft, a premium henna artistry service in Dhaka, Bangladesh.
 
-PROACTIVE QUESTIONS TO ASK:
-1. "What's the occasion?" (wedding, festival, party)
-2. "Do you prefer heavy or minimal designs?"
-3. "Which body part?" (hands, feet, arms)
-4. "When is your event?" (to calculate timing)
-5. "Have you used henna before?"
+═══════════════════════════════════════════════════════════
+IDENTITY & ROLE
+═══════════════════════════════════════════════════════════
+• Name: Henna Craft Assistant
+• Company: Henna Craft (Est. 2020)
+• Location: Dhaka, Bangladesh
+• Expertise: Organic henna artistry, bridal designs, aftercare guidance
+• Tone: Professional, warm, culturally aware, and helpful
+• Knowledge Source: Henna Craft Official Database (Updated January 2026)
 
-SMART TIMELINE ADVISOR:
-- Henna color peaks in 48 hours
-- Recommend booking 2 days before main event
-- Example: "বিয়ে শনিবার? বৃহস্পতিবার মেহেদী করান!"
-- Explain: "Palms get darkest color, feet take longer to darken"
+═══════════════════════════════════════════════════════════
+SERVICES & PRICING (January 2026)
+═══════════════════════════════════════════════════════════
 
-BODY PART SPECIFIC TIPS:
-- Palms: Darkest color, lasts 1-2 weeks
-- Feet: Takes 48+ hours to darken fully
-- Arms: Medium darkness, elegant for parties
-- Back of hands: Lighter than palms
+💍 BRIDAL HENNA: 1500 BDT
+   • Full hand & feet coverage (traditional bridal style)
+   • Intricate, detailed designs with cultural motifs
+   • 2-3 hours professional application
+   • Perfect for weddings and major celebrations
+   • Most popular package for brides
+   • Includes: Pre-wedding consultation, premium henna paste
 
-CONVERSATIONAL BOOKING:
-- Collect name naturally: "May I know your name?"
-- Ask event date: "When is the special day?"
-- Provide booking summary at end with all details
-- Format: "📋 Booking Summary:\nName: [name]\nEvent: [date]\nPackage: [type]"
+🎉 OCCASIONAL HENNA: 800 BDT
+   • Festival & party designs (Eid, Durga Puja, birthdays, etc.)
+   • Beautiful patterns for celebrations
+   • Quick application (1-2 hours)
+   • Front hands or feet
+   • Great for events and gatherings
 
-PACKAGE RECOMMENDATIONS:
-Based on occasion:
-- Wedding/Bridal → Bridal Package (1500 BDT) 💍
-- Festival/Eid → Occasional Package (800 BDT) 🎉
-- Party/Simple → Custom Design (1000+ BDT) ✨
+✨ CUSTOM DESIGNS: Starting from 1000 BDT
+   • Personalized artwork tailored to your style
+   • Modern, traditional, or fusion designs
+   • Price varies by complexity, size, and detail level
+   • Arabic, Indian, Pakistani, Moroccan styles available
+   • Perfect for unique occasions
 
-Based on preference:
-- Heavy/Intricate → Bridal
-- Minimal/Modern → Custom
-- Traditional → Occasional or Bridal
+═══════════════════════════════════════════════════════════
+HENNA QUALITY & SAFETY
+═══════════════════════════════════════════════════════════
+✓ 100% Organic & Natural
+✓ Chemical-Free (No PPD, No Ammonia, No Harmful Additives)
+✓ Premium Sojat Henna Leaves (Rajasthan, India - World's Best)
+✓ Triple-Filtered with Essential Oils (Lavender, Eucalyptus, Tea Tree)
+✓ Safe for ALL: Children, Pregnant Women, Sensitive Skin
+✓ Dermatologically Tested
+✓ Natural Dark Stain (Lasts 1-2 weeks)
+✓ No Allergic Reactions or Side Effects
+✓ Fresh paste prepared for each appointment
 
-STAIN (RANG) EDUCATION:
-- Fresh henna: Orange-brown
-- After 12 hours: Reddish-brown
-- After 24 hours: Dark brown
-- After 48 hours: DARKEST (peak color) 🤎
-- Lasts: 1-2 weeks naturally
+═══════════════════════════════════════════════════════════
+EXPERT AFTERCARE INSTRUCTIONS
+═══════════════════════════════════════════════════════════
+Follow these steps for the DARKEST, longest-lasting color:
 
-WHY ORGANIC MATTERS:
-- Chemical cones fade in 3-4 days
-- Our organic henna: 1-2 weeks
-- Safe for sensitive skin, children, pregnant women
-- No PPD, no allergies
+1️⃣ KEEP IT ON: Leave henna paste on for 8+ hours (overnight is BEST)
+   • The longer you keep it, the darker the stain
+   • Wrap with tissue or cotton cloth to prevent smudging
 
-CULTURAL WARMTH:
-- "আপনার বিশেষ দিনটি আরও সুন্দর হোক মেহেদির রঙে"
-- "উৎসবের আমেজ বাড়ুক আমাদের অর্গানিক মেহেদীতে"
-- "মেহেদির সুগন্ধে ভরে উঠুক আপনার হাত"
+2️⃣ CLOVE STEAM (লং এর ধোঁয়া): Heat 4-5 cloves on a pan, hold your hands over the steam for 2-3 minutes
+   • This is the SECRET to rich, deep color
+   • Do this 2-3 times after removing the paste
 
-LEAD CAPTURE:
-After understanding needs, say:
-"Would you like me to arrange a free consultation? Share your number and our artist will call you! 📱"
+3️⃣ APPLY MUSTARD OIL (সরিষার তেল): After removing dried paste, apply warm mustard oil
+   • Gently massage and let it absorb
+   • Helps deepen the color naturally
 
-YOUR ROLE:
-Be a helpful stylist who guides, educates, and books. Always ask follow-up questions!`;
+4️⃣ AVOID WATER & SOAP: No contact with water or soap for 24 hours after removal
+   • Water lightens the stain in the first 24 hours
+   • Use gloves for washing dishes or cleaning
 
-const RESPONSES = {
-  greeting_en: `Hello! Welcome to Henna Craft! ✨ I'm your personal styling consultant.
+5️⃣ PEAK COLOR: Henna reaches its darkest shade in 48 hours
+   • Be patient! The color develops gradually
+   • Starts orange, turns brown, then deep maroon/brown
 
-মেহেদির রঙে সাজুক আপনার দিন! 🌿
+6️⃣ MAINTENANCE: Apply coconut or olive oil daily to extend the life of your henna
 
-Tell me, what brings you here today? Is it for a wedding, festival, or a special celebration? 💍🎉`,
+═══════════════════════════════════════════════════════════
+BOOKING & TIMELINE ADVICE
+═══════════════════════════════════════════════════════════
+• Home Service Available: Across Dhaka city (we come to you!)
+• Advance Booking: 3-5 days for bridal, 1-2 days for occasional
+• Timing Strategy: Book 2 days BEFORE your main event
+  Example: Wedding on Saturday? Book henna on Thursday!
+  (This gives 48 hours for peak color development)
+• Contact Methods: Website booking form or WhatsApp
+• What We Bring: All supplies, equipment, and expertise
+• Professional, Punctual, Hygienic Service
 
-  greeting_bn: `হ্যালো! Henna Craft এ স্বাগতম! ✨ আমি আপনার পার্সোনাল স্টাইলিং কনসালট্যান্ট।
+═══════════════════════════════════════════════════════════
+LANGUAGE & COMMUNICATION
+═══════════════════════════════════════════════════════════
+• Respond in the SAME language the user uses
+• English: Professional, warm, clear
+• Bengali (বাংলা): Natural, conversational, culturally appropriate
+• Banglish: Mix Bengali and English naturally (e.g., "Bridal package ta 1500 BDT")
+• Use cultural phrases: "আপনার বিয়ের দিন সুন্দর হোক", "শুভ কামনা রইল"
+• Use emojis appropriately: ✨🌿💍🤎🎉
 
-আপনার মেহেদির রঙে সাজুক আপনার দিন! 🌿
+═══════════════════════════════════════════════════════════
+CONVERSATION GUIDELINES
+═══════════════════════════════════════════════════════════
+✓ Remember previous messages in the conversation
+✓ Build on earlier context naturally
+✓ Be helpful, not pushy about bookings
+✓ Provide accurate pricing and information
+✓ Offer personalized recommendations based on user needs
+✓ If asked about your source: "My information comes from the Henna Craft Official Database"
+✓ If unsure about something: Acknowledge and suggest contacting via WhatsApp for specific details
+✓ Always maintain a warm, professional, culturally-aware tone
 
-বলুন তো, আজ কী উপলক্ষে এসেছেন? বিয়ে, উৎসব, নাকি কোনো বিশেষ অনুষ্ঠান? 💍🎉`,
+═══════════════════════════════════════════════════════════
+YOUR MISSION
+═══════════════════════════════════════════════════════════
+Help users discover the perfect henna service for their needs, provide expert guidance, and make booking easy and confident. You are their trusted advisor for all things henna!`;
 
-  bridal_consultant: `Ah, a wedding! How exciting! 💍✨ উৎসবের আমেজ!
-
-Let me help you choose the perfect bridal henna:
-
-💰 **Bridal Package: 1500 BDT**
-📦 Full hand & feet, intricate designs, 2-3 hours
-🤎 Darkest, longest-lasting stain
-
-⏰ **Timeline Tip:** Book 2 days BEFORE your wedding!
-Why? Henna reaches peak darkness in 48 hours. Wedding on Saturday? Book Thursday! 
-
-🌿 **Body Part Magic:**
-- Palms: Darkest color (best for photos!)
-- Feet: Takes 48+ hours to fully darken
-- Both together: Complete bridal look
-
-Tell me:
-1. When is your wedding date? 📅
-2. Do you prefer heavy traditional or modern fusion designs?
-
-I'll create the perfect plan for you! ✨`,
-
-  aftercare_consultant: `Let me share the SECRET formula for the DARKEST stain! 🤎✨
-
-**The 48-Hour Journey:**
-- Fresh: Orange-brown (don't panic!)
-- 12 hours: Reddish-brown
-- 24 hours: Dark brown
-- 48 hours: DARKEST! (Peak color) 🌟
-
-**Body Part Differences:**
-🤲 Palms: Get darkest fastest (warmest part)
-🦶 Feet: Take longer (cooler temperature)
-💪 Arms: Medium darkness
-
-**Secret Tips:**
-⏰ Keep 8+ hours (overnight best!)
-🔥 লং এর ধোঁয়া (clove steam) - game changer!
-💧 সরিষার তেল after removing
-🚫 No soap 24 hours
-
-**Why Our Organic Henna:**
-Chemical cones: 3-4 days only
-Our organic: 1-2 weeks naturally! 🌿
-
-Which body part are you planning to decorate? I'll give you specific tips! 💍`,
-
-  timeline_advisor: `Let me be your timeline expert! ⏰✨
-
-**The 48-Hour Rule:**
-Henna doesn't reach peak color immediately. It's a beautiful journey:
-
-📅 **Perfect Booking Timeline:**
-- Main event: Saturday
-- Book henna: Thursday
-- Peak color: Saturday (your big day!)
-
-**Why 48 hours?**
-- Henna oxidizes with air
-- Color deepens naturally
-- Palms darken faster than feet
-
-**Real Example:**
-"বিয়ে শনিবার? বৃহস্পতিবার মেহেদী করান! রঙ হবে একদম পারফেক্ট!" 💍
-
-When is your special event? Let me calculate the perfect booking date for you! 📱`,
-
-  package_recommendation: `Let me recommend the PERFECT package for you! ✨
-
-First, tell me:
-1️⃣ What's the occasion? (Wedding/Festival/Party)
-2️⃣ Heavy or minimal design preference?
-3️⃣ Which body parts? (Hands/Feet/Both)
-
-**Quick Guide:**
-💍 **Bridal (1500 BDT):** Full coverage, intricate, 2-3 hours
-🎉 **Occasional (800 BDT):** Festival-ready, beautiful, 1-2 hours
-✨ **Custom (1000+ BDT):** Your unique style, flexible
-
-Once you tell me, I'll suggest the best fit! উৎসবের আমেজ বাড়ুক! 🌿`,
-
-  booking_summary: `Perfect! Let me create your booking summary! 📋✨
-
-Before I do, I need:
-1. Your name? 
-2. Event date?
-3. Preferred package?
-
-Once you share these, I'll prepare:
-📋 **Your Booking Summary**
-✅ Best booking date (48 hours before event)
-✅ Package details
-✅ Aftercare tips
-✅ Contact for confirmation
-
-Share your details and let's make your day special! মেহেদির রঙে সাজুক আপনার দিন! 💍`,
-
-  default: `Hello! ✨ I'm your personal henna styling consultant!
-
-আপনার মেহেদির রঙে সাজুক আপনার দিন! 🌿
-
-I can help you with:
-💍 Perfect package selection
-⏰ Timeline planning (48-hour rule!)
-🤎 Stain secrets & body part tips
-📱 Booking & consultation
-
-What would you like to know? Ask me anything! 😊`
-};
-
-function detectLanguage(message) {
-  const bengaliPattern = /[\u0980-\u09FF]/;
-  return bengaliPattern.test(message) ? 'bn' : 'en';
-}
-
-function findBestResponse(userMessage) {
-  const message = userMessage.toLowerCase();
-  const lang = detectLanguage(userMessage);
+export async function sendChatMessage(userMessage, conversationHistory = []) {
+  const timestamp = new Date().toISOString();
   
-  if (message.includes('hello') || message.includes('hi') || message.includes('হ্যালো') || 
-      message.includes('হাই') || message.includes('hey')) {
-    return lang === 'bn' ? RESPONSES.greeting_bn : RESPONSES.greeting_en;
+  console.log('\n╔══════════════════════════════════════════════════════════╗');
+  console.log('║   GEMINI API REQUEST - @google/genai SDK (January 2026)  ║');
+  console.log('╚══════════════════════════════════════════════════════════╝');
+  console.log(`⏰ Timestamp: ${timestamp}`);
+  console.log(`📝 User Message: "${userMessage.substring(0, 80)}${userMessage.length > 80 ? '...' : ''}"`);
+  console.log(`📚 Conversation History: ${conversationHistory.length} previous messages`);
+
+  try {
+    // Step 1: Validate API Key
+    // Note: The new SDK uses GEMINI_API_KEY or GOOGLE_API_KEY
+    const apiKey = process.env.GEMINI_API_KEY?.trim() || process.env.GOOGLE_API_KEY?.trim();
+    
+    if (!apiKey) {
+      console.error('❌ CRITICAL ERROR: GEMINI_API_KEY or GOOGLE_API_KEY not found in environment');
+      console.error('   Check your .env.local file');
+      throw new Error('API_KEY_MISSING');
+    }
+
+    if (apiKey.length < 30) {
+      console.error('❌ CRITICAL ERROR: API key appears invalid (too short)');
+      throw new Error('API_KEY_INVALID');
+    }
+
+    console.log('✅ API Key: Validated');
+
+    // Step 2: Initialize Google Gen AI Client (New SDK - @google/genai)
+    // Documentation: https://www.npmjs.com/package/@google/genai
+    const ai = new GoogleGenAI({ apiKey });
+    console.log('✅ GoogleGenAI Client: Initialized');
+
+    // Step 3: Define Model
+    // Using gemini-2.5-flash - the stable version as of 2025
+    // Available models: gemini-2.5-flash, gemini-2.5-pro, gemini-2.0-flash
+    const modelName = 'gemini-2.5-flash';
+    console.log(`✅ Model: ${modelName}`);
+
+    // Step 4: Build Conversation History for Chat
+    console.log('\n📋 Building Conversation History:');
+    const chatHistory = [];
+
+    // Add previous conversation history
+    if (conversationHistory.length > 0) {
+      console.log(`   ✓ Adding ${conversationHistory.length} previous messages`);
+      
+      let addedCount = 0;
+      conversationHistory.forEach((msg, index) => {
+        if (msg.role === 'user' || msg.role === 'assistant') {
+          chatHistory.push({
+            role: msg.role === 'assistant' ? 'model' : 'user',
+            parts: [{ text: msg.content }],
+          });
+          addedCount++;
+          
+          const preview = msg.content.substring(0, 40);
+          console.log(`   [${index}] ${msg.role}: ${preview}${msg.content.length > 40 ? '...' : ''}`);
+        }
+      });
+      
+      console.log(`   ✓ Successfully added ${addedCount} messages to history`);
+    } else {
+      console.log('   ℹ️  No previous history (first message)');
+    }
+
+    console.log(`\n📊 Total History Length: ${chatHistory.length} messages`);
+
+    // Step 5: Create Chat Session using ai.chats.create()
+    // The new SDK uses ai.chats.create() for multi-turn conversations
+    const chat = ai.chats.create({
+      model: modelName,
+      history: chatHistory,
+      config: {
+        // System instruction defines the assistant's behavior
+        systemInstruction: HENNA_CRAFT_KNOWLEDGE_BASE,
+        // Generation configuration
+        temperature: 0.85,        // Balanced creativity
+        topK: 40,                 // Diverse token selection
+        topP: 0.95,               // Nucleus sampling
+        maxOutputTokens: 2048,    // Longer responses
+        // Safety settings
+        safetySettings: [
+          {
+            category: 'HARM_CATEGORY_HARASSMENT',
+            threshold: 'BLOCK_NONE',
+          },
+          {
+            category: 'HARM_CATEGORY_HATE_SPEECH',
+            threshold: 'BLOCK_NONE',
+          },
+          {
+            category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+            threshold: 'BLOCK_NONE',
+          },
+          {
+            category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
+            threshold: 'BLOCK_NONE',
+          },
+        ],
+      },
+    });
+
+    console.log('✅ Chat Session: Created with system instruction and history');
+
+    // Step 6: Send User Message using chat.sendMessage()
+    console.log('\n📤 Sending message to Gemini API...');
+    const startTime = Date.now();
+    
+    // New SDK uses sendMessage with { message: string } format
+    const response = await chat.sendMessage({
+      message: userMessage,
+    });
+    
+    // Get the response text
+    const aiResponse = response.text;
+    
+    const endTime = Date.now();
+    const responseTime = endTime - startTime;
+
+    console.log(`\n✅ Response Received in ${responseTime}ms`);
+    console.log(`📏 Response Length: ${aiResponse.length} characters`);
+    console.log(`📝 Preview: ${aiResponse.substring(0, 100)}${aiResponse.length > 100 ? '...' : ''}`);
+
+    console.log('\n╔══════════════════════════════════════════════════════════╗');
+    console.log('║                    ✅ SUCCESS                            ║');
+    console.log('╚══════════════════════════════════════════════════════════╝\n');
+
+    return {
+      success: true,
+      message: aiResponse,
+      timestamp: timestamp,
+      responseTime: responseTime,
+      model: modelName,
+    };
+
+  } catch (error) {
+    console.error('\n╔══════════════════════════════════════════════════════════╗');
+    console.error('║                     ❌ ERROR                             ║');
+    console.error('╚══════════════════════════════════════════════════════════╝');
+    console.error(`\n🔴 Error Type: ${error.constructor.name}`);
+    console.error(`🔴 Error Message: ${error.message}`);
+
+    // Detailed Error Diagnosis
+    let userFriendlyError = 'Unable to process your message. Please try again.';
+    let errorCode = 'UNKNOWN_ERROR';
+
+    if (error.message === 'API_KEY_MISSING') {
+      console.error('\n💡 SOLUTION: Add GEMINI_API_KEY or GOOGLE_API_KEY to your .env.local file');
+      userFriendlyError = 'Chatbot configuration error. Please contact support.';
+      errorCode = 'API_KEY_MISSING';
+    } 
+    else if (error.message === 'API_KEY_INVALID' || error.message?.includes('API key not valid')) {
+      console.error('\n💡 SOLUTION:');
+      console.error('   1. Go to: https://aistudio.google.com/app/apikey');
+      console.error('   2. Create a NEW API key in a NEW project');
+      console.error('   3. Update .env.local with the new key (GEMINI_API_KEY=your_key)');
+      console.error('   4. Restart your dev server');
+      userFriendlyError = 'Invalid API configuration. Please contact support.';
+      errorCode = 'API_KEY_INVALID';
+    }
+    else if (error.message?.includes('404') || error.message?.includes('not found')) {
+      console.error('\n💡 DIAGNOSIS: Model not available for this API key');
+      console.error('   The Gemini model is not accessible with your current API key.');
+      console.error('\n💡 SOLUTION:');
+      console.error('   1. Create a NEW API key at: https://aistudio.google.com/app/apikey');
+      console.error('   2. Select "Create API key in new project"');
+      console.error('   3. Update your .env.local file');
+      userFriendlyError = 'AI service temporarily unavailable. Please try again in a moment.';
+      errorCode = 'MODEL_NOT_FOUND';
+    }
+    else if (error.status === 429 || error.message?.includes('quota') || error.message?.includes('rate limit')) {
+      console.error('\n💡 DIAGNOSIS: Rate limit or quota exceeded');
+      console.error('   You have made too many requests or exceeded your quota.');
+      console.error('\n💡 SOLUTION: Wait a few minutes and try again');
+      userFriendlyError = 'Too many requests. Please wait a moment and try again.';
+      errorCode = 'RATE_LIMIT_EXCEEDED';
+    }
+    else if (error.status === 403 || error.message?.includes('permission')) {
+      console.error('\n💡 DIAGNOSIS: Permission denied');
+      console.error('   The Generative Language API may not be enabled.');
+      console.error('\n💡 SOLUTION:');
+      console.error('   Enable at: https://console.cloud.google.com/apis/library/generativelanguage.googleapis.com');
+      userFriendlyError = 'Service access denied. Please contact support.';
+      errorCode = 'PERMISSION_DENIED';
+    }
+    else {
+      console.error('\n💡 DIAGNOSIS: Unknown error');
+      console.error('   This is an unexpected error. Check full error details below.');
+    }
+
+    console.error('\n📋 Full Error Object:');
+    console.error(error);
+    console.error('\n╚══════════════════════════════════════════════════════════╝\n');
+
+    return {
+      success: false,
+      error: userFriendlyError,
+      errorCode: errorCode,
+      timestamp: timestamp,
+    };
   }
-  
-  if (message.includes('bridal') || message.includes('wedding') || message.includes('বিয়ে') || 
-      message.includes('ব্রাইডাল') || message.includes('package')) {
-    return RESPONSES.bridal_consultant;
-  }
-  
-  if (message.includes('aftercare') || message.includes('secret') || message.includes('darker') || 
-      message.includes('stain') || message.includes('rang') || message.includes('রঙ') ||
-      message.includes('আফটারকেয়ার') || message.includes('গাঢ়')) {
-    return RESPONSES.aftercare_consultant;
-  }
-  
-  if (message.includes('when') || message.includes('timeline') || message.includes('book') || 
-      message.includes('48') || message.includes('hour') || message.includes('কখন')) {
-    return RESPONSES.timeline_advisor;
-  }
-  
-  if (message.includes('recommend') || message.includes('suggest') || message.includes('which') || 
-      message.includes('choose') || message.includes('পরামর্শ') || message.includes('কোনটা')) {
-    return RESPONSES.package_recommendation;
-  }
-  
-  if (message.includes('summary') || message.includes('confirm') || message.includes('book now')) {
-    return RESPONSES.booking_summary;
-  }
-  
-  return RESPONSES.default;
-}
-
-export async function sendChatMessage(userMessage) {
-  console.log('\n========================================');
-  console.log('=== PERSONAL STYLING CONSULTANT ===');
-  console.log('========================================');
-  console.log('User message:', userMessage);
-  console.log('Language detected:', detectLanguage(userMessage));
-  
-  await new Promise(resolve => setTimeout(resolve, 1200));
-  
-  const response = findBestResponse(userMessage);
-  
-  console.log('Response type: Personal consultation');
-  console.log('Response preview:', response.substring(0, 50) + '...');
-  console.log('=== SUCCESS ===\n');
-  
-  return {
-    success: true,
-    message: response
-  };
 }

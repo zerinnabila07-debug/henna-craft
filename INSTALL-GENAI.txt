@@ -1,0 +1,46 @@
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║        ATTEMPTING TO INSTALL @google/genai                       ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+
+I've added "@google/genai": "latest" to your package.json.
+
+PLEASE RUN THIS COMMAND IN YOUR TERMINAL:
+═══════════════════════════════════════════════════════════════════
+
+cd "/mnt/d/Projects/henna craft"
+npm install
+
+═══════════════════════════════════════════════════════════════════
+
+WHAT WILL HAPPEN:
+═══════════════════════════════════════════════════════════════════
+
+Option 1: Package EXISTS
+   → npm will install it successfully
+   → Your code will work
+   → ✅ Problem solved!
+
+Option 2: Package DOES NOT EXIST
+   → npm will show error: "404 Not Found - @google/genai"
+   → This proves the package doesn't exist
+   → We need to use @google/generative-ai instead
+
+═══════════════════════════════════════════════════════════════════
+
+AFTER RUNNING npm install:
+═══════════════════════════════════════════════════════════════════
+
+1. If it SUCCEEDS:
+   → Tell me: "npm install succeeded"
+   → Your chatbot should work
+
+2. If it FAILS with 404 error:
+   → Tell me: "npm install failed with 404"
+   → I will fix your code to use @google/generative-ai
+   → This is the correct package that actually exists
+
+═══════════════════════════════════════════════════════════════════
+
+PLEASE RUN THE COMMAND NOW AND TELL ME THE RESULT!

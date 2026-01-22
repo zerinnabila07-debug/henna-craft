@@ -1,0 +1,118 @@
+╔════════════════════════════════════════════════════════════╗
+║         GOOGLE GEMINI API KEY SETUP GUIDE                  ║
+║              (January 2026 - Updated)                      ║
+╚════════════════════════════════════════════════════════════╝
+
+PROBLEM:
+Your current API key does NOT have access to Gemini models.
+Error: "models/gemini-pro is not found for API version v1beta"
+
+SOLUTION:
+Follow these steps EXACTLY to create a working API key:
+
+╔════════════════════════════════════════════════════════════╗
+║  STEP 1: Go to Google AI Studio                           ║
+╚════════════════════════════════════════════════════════════╝
+
+1. Open your browser
+2. Go to: https://aistudio.google.com/app/apikey
+3. Sign in with your Google account
+
+╔════════════════════════════════════════════════════════════╗
+║  STEP 2: Create API Key in NEW Project                    ║
+╚════════════════════════════════════════════════════════════╝
+
+IMPORTANT: Create in a NEW project, not an existing one!
+
+1. Click "Create API Key" button
+2. Select "Create API key in new project" (NOT existing project)
+3. Wait 10-20 seconds for the key to generate
+4. Copy the new API key (starts with AIza...)
+
+Why new project?
+- New projects auto-enable Generative Language API
+- Existing projects may have restrictions or old API versions
+
+╔════════════════════════════════════════════════════════════╗
+║  STEP 3: Update Your .env.local File                      ║
+╚════════════════════════════════════════════════════════════╝
+
+1. Open: /mnt/d/Projects/henna craft/.env.local
+2. Replace the old key with your NEW key:
+
+GOOGLE_API_KEY=YOUR_NEW_KEY_HERE
+
+IMPORTANT:
+- No spaces before or after the key
+- No quotes around the key
+- Just: GOOGLE_API_KEY=AIza...
+
+╔════════════════════════════════════════════════════════════╗
+║  STEP 4: Test the New Key                                 ║
+╚════════════════════════════════════════════════════════════╝
+
+1. Save the .env.local file
+2. Open terminal in project folder
+3. Run: node test-gemini-2026.mjs
+
+Expected result:
+╔════════════════════════════════════════════╗
+║          ✅ TEST PASSED!               ║
+╚════════════════════════════════════════════╝
+
+🤖 AI Response:
+Our pricing for Henna Craft services is as follows...
+
+╔════════════════════════════════════════════════════════════╗
+║  STEP 5: Restart Your Dev Server                          ║
+╚════════════════════════════════════════════════════════════╝
+
+1. Stop your Next.js dev server (Ctrl+C)
+2. Run: npm run dev
+3. Test the chatbot on your website
+
+╔════════════════════════════════════════════════════════════╗
+║  TROUBLESHOOTING                                           ║
+╚════════════════════════════════════════════════════════════╝
+
+If you still get errors:
+
+ERROR: "API key not valid"
+→ The key was copied incorrectly
+→ Check for extra spaces or missing characters
+
+ERROR: "404 Not Found"
+→ Wait 2-3 minutes after creating the key
+→ The API needs time to activate
+
+ERROR: "403 Permission Denied"
+→ Go to: https://console.cloud.google.com/apis/library/generativelanguage.googleapis.com
+→ Click "Enable"
+→ Wait 1-2 minutes
+
+ERROR: "429 Quota Exceeded"
+→ You've made too many requests
+→ Wait 5-10 minutes and try again
+
+╔════════════════════════════════════════════════════════════╗
+║  IMPORTANT NOTES                                           ║
+╚════════════════════════════════════════════════════════════╝
+
+✅ Free tier includes:
+   - 15 requests per minute
+   - 1,500 requests per day
+   - Perfect for development and small websites
+
+✅ Models available with new key:
+   - gemini-1.5-flash (recommended, fast)
+   - gemini-1.5-pro (more powerful)
+   - gemini-pro (older, but stable)
+
+✅ Your chatbot will automatically use the best available model
+
+╔════════════════════════════════════════════════════════════╝
+
+After creating the new key, tell me:
+"I created a new API key and updated .env.local"
+
+Then I'll update the code to use the correct model for your new key.

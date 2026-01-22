@@ -1,0 +1,135 @@
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║              🔧 QUICK FIX: Connection Error                      ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+
+ERROR MESSAGE:
+═══════════════════════════════════════════════════════════════════
+"I'm having trouble connecting right now. 😔
+Unable to process your message. Please try again."
+
+
+ROOT CAUSE:
+═══════════════════════════════════════════════════════════════════
+Your API key does NOT have access to Gemini models.
+
+
+SOLUTION (Takes 3 minutes):
+═══════════════════════════════════════════════════════════════════
+
+STEP 1: Create New API Key
+───────────────────────────────────────────────────────────────────
+→ Go to: https://aistudio.google.com/app/apikey
+→ Click "Create API Key"
+→ Select "Create API key in new project" ← IMPORTANT!
+→ Copy the new key
+
+
+STEP 2: Update .env.local
+───────────────────────────────────────────────────────────────────
+→ Open file: /mnt/d/Projects/henna craft/.env.local
+→ Replace with: GOOGLE_API_KEY=YOUR_NEW_KEY_HERE
+→ Save the file
+
+Example:
+GOOGLE_API_KEY=AIzaSyC1234567890abcdefghijklmnopqrstuvwxyz
+
+
+STEP 3: Restart Dev Server
+───────────────────────────────────────────────────────────────────
+→ Press Ctrl+C in terminal
+→ Run: npm run dev
+
+
+STEP 4: Test Chatbot
+───────────────────────────────────────────────────────────────────
+→ Open your website
+→ Click chatbot button
+→ Type: "What are your prices?"
+→ Should get response! ✅
+
+
+WHAT I FIXED IN YOUR CODE:
+═══════════════════════════════════════════════════════════════════
+✅ Added fallback mechanism:
+   1. Try gemini-2.5-flash first
+   2. If fails, try gemini-1.5-flash
+   3. If both fail, show clear error
+
+✅ Better error messages
+✅ Detailed server logs
+✅ User-friendly error handling
+
+
+VERIFY API KEY WORKS:
+═══════════════════════════════════════════════════════════════════
+Before testing on website, run:
+
+→ node test-genai-2.5-flash.mjs
+
+If you see:
+╔══════════════════════════════════════════════════════════════╗
+║                  ✅ ALL TESTS PASSED!                        ║
+╚══════════════════════════════════════════════════════════════╝
+
+Your API key works! ✅
+
+
+WHY YOUR CURRENT KEY DOESN'T WORK:
+═══════════════════════════════════════════════════════════════════
+❌ Created in old/restricted project
+❌ Doesn't have Gemini 2.0+ access
+❌ May be using old API version
+
+✅ Solution: Create key in NEW project (auto-enables everything)
+
+
+CHECKLIST:
+═══════════════════════════════════════════════════════════════════
+□ Created new API key at Google AI Studio
+□ Selected "Create API key in new project"
+□ Copied the new key
+□ Updated .env.local file
+□ Saved the file
+□ Restarted dev server (npm run dev)
+□ Tested chatbot on website
+□ Chatbot responds successfully ✅
+
+
+STILL NOT WORKING?
+═══════════════════════════════════════════════════════════════════
+Check your terminal logs (where npm run dev is running):
+
+If you see:
+✅ API Key: Validated
+✅ Model: gemini-2.5-flash loaded
+✅ Response Received
+
+→ It works!
+
+If you see:
+❌ No compatible model found
+❌ MODEL_NOT_AVAILABLE
+
+→ Create another new API key
+
+
+EXPECTED RESULT:
+═══════════════════════════════════════════════════════════════════
+After fixing, your chatbot will:
+
+✅ Respond within 2-3 seconds
+✅ Remember previous messages
+✅ Provide accurate pricing (1500, 800, 1000+)
+✅ Respond in Bengali/English/Banglish
+✅ State: "My information comes from the Henna Craft Official Database"
+
+
+═══════════════════════════════════════════════════════════════════
+
+🚀 CREATE THE NEW API KEY NOW!
+
+Go to: https://aistudio.google.com/app/apikey
+
+═══════════════════════════════════════════════════════════════════
