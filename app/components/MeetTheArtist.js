@@ -1,25 +1,37 @@
 'use client';
 
 import Image from 'next/image';
+import ScrollReveal from './ScrollReveal';
+import ParallaxSection from './ParallaxSection';
+import SectionTransition from './SectionTransition';
 
 export default function MeetTheArtist() {
   return (
-    <section className="py-20 relative bg-gradient-to-b from-[#0a0a0a] to-[#1a1a1a]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="relative h-[500px] lg:h-[600px] rounded-3xl overflow-hidden">
-            <Image
-              src="/gallery/bridal-5.jpg"
-              alt="The Artist"
-              fill
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/60 to-transparent"></div>
-          </div>
+    <>
+      <SectionTransition variant="bronze" />
+      
+      <ParallaxSection className="py-32 md:py-40 relative bg-gradient-to-b from-black via-[#0a0a0a] to-[#1a1a1a]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 items-center">
+            <ScrollReveal delay={0} direction="left">
+              <div className="relative h-[500px] lg:h-[600px] rounded-3xl overflow-hidden border-2 border-[#b38b59]/20 shadow-2xl">
+                <Image
+                  src="/gallery/bridal-5.jpg"
+                  alt="The Artist"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/80 to-transparent"></div>
+              </div>
+            </ScrollReveal>
 
-          <div className="space-y-6">
-            <h2 className="serif-heading text-4xl sm:text-5xl font-bold text-[#b38b59] mb-6">
+            <ScrollReveal delay={0.2} direction="right">
+              <div className="space-y-6">
+            <div className="inline-block mb-6">
+              <span className="text-[#b38b59]/60 text-sm uppercase tracking-[0.3em] font-light">Meet The Artist</span>
+            </div>
+            <h2 className="serif-heading text-4xl md:text-6xl font-black text-[#b38b59] mb-8 leading-tight">
               The Hands Behind the Art
             </h2>
             
@@ -48,9 +60,13 @@ export default function MeetTheArtist() {
                 ))}
               </ul>
             </div>
+              </div>
+            </ScrollReveal>
           </div>
         </div>
-      </div>
-    </section>
+      </ParallaxSection>
+      
+      <SectionTransition variant="gradient" />
+    </>
   );
 }

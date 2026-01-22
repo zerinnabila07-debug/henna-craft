@@ -1,6 +1,9 @@
 'use client';
 
 import { Star, User } from 'lucide-react';
+import ScrollReveal from './ScrollReveal';
+import ParallaxSection from './ParallaxSection';
+import SectionTransition from './SectionTransition';
 
 export default function Testimonials() {
   const testimonials = [
@@ -25,21 +28,30 @@ export default function Testimonials() {
   ];
 
   return (
-    <section className="py-20 relative bg-[#0a0a0a]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="serif-heading text-4xl sm:text-5xl font-bold text-[#b38b59] mb-4">Client Stories</h2>
-          <p className="text-xl text-[#8B7355] max-w-2xl mx-auto">
-            Hear what our valued clients have to say about their experience
-          </p>
-        </div>
+    <>
+      <SectionTransition variant="bronze" />
+      
+      <ParallaxSection className="py-32 md:py-40 relative bg-gradient-to-b from-black via-[#0a0a0a] to-black">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ScrollReveal delay={0} className="text-center mb-20">
+            <div className="inline-block mb-6">
+              <span className="text-[#b38b59]/60 text-sm uppercase tracking-[0.3em] font-light">Testimonials</span>
+            </div>
+            <h2 className="serif-heading text-5xl md:text-7xl font-black text-[#b38b59] mb-8 leading-tight">Client Stories</h2>
+            <p className="text-xl md:text-2xl text-[#8B7355] max-w-3xl mx-auto leading-relaxed font-light">
+              Hear what our valued clients have to say about their experience
+            </p>
+            <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#b38b59] to-transparent mx-auto mt-8"></div>
+          </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {testimonials.map((testimonial) => (
-            <div
-              key={testimonial.id}
-              className="bg-[#1a1a1a] rounded-2xl p-8 border border-[#b38b59]/30 hover:border-[#b38b59]/50 transition-all duration-300 hover:shadow-lg hover:shadow-[#b38b59]/10"
-            >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+            {testimonials.map((testimonial, index) => (
+              <ScrollReveal 
+                key={testimonial.id}
+                delay={0.2 + (index * 0.15)}
+              >
+                <div className="bg-[#1a1a1a]/40 backdrop-blur-sm rounded-2xl p-8 border border-[#b38b59]/30 hover:border-[#b38b59]/50 transition-all duration-500 hover:shadow-lg hover:shadow-[#b38b59]/20 h-full"
+                >
               <div className="flex flex-col items-center mb-6">
                 <div className="w-16 h-16 rounded-full bg-[#2a2a2a] border-2 border-[#b38b59]/40 flex items-center justify-center mb-4">
                   <User className="text-[#b38b59]" size={32} />
@@ -63,10 +75,14 @@ export default function Testimonials() {
               <p className="text-[#b38b59] text-center font-semibold">
                 {testimonial.name}
               </p>
-            </div>
-          ))}
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </ParallaxSection>
+      
+      <SectionTransition variant="gradient" />
+    </>
   );
 }

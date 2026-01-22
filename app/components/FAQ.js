@@ -30,23 +30,32 @@ export default function FAQ() {
   };
 
   return (
-    <section className="py-20 relative bg-gradient-to-b from-[#0a0a0a] to-[#1a1a1a]">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="serif-heading text-4xl sm:text-5xl font-bold text-[#b38b59] mb-4">
-            Frequently Asked Questions
-          </h2>
-          <p className="text-xl text-[#8B7355]">
-            Everything you need to know about our henna services
-          </p>
-        </div>
+    <>
+      <SectionTransition variant="bronze" />
+      
+      <ParallaxSection className="py-32 md:py-40 relative bg-gradient-to-b from-black via-[#0a0a0a] to-[#1a1a1a]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ScrollReveal delay={0} className="text-center mb-20">
+            <div className="inline-block mb-6">
+              <span className="text-[#b38b59]/60 text-sm uppercase tracking-[0.3em] font-light">Questions</span>
+            </div>
+            <h2 className="serif-heading text-5xl md:text-7xl font-black text-[#b38b59] mb-8 leading-tight">
+              FAQ
+            </h2>
+            <p className="text-xl md:text-2xl text-[#8B7355] leading-relaxed font-light">
+              Everything you need to know about our henna services
+            </p>
+            <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#b38b59] to-transparent mx-auto mt-8"></div>
+          </ScrollReveal>
 
-        <div className="space-y-4">
-          {faqs.map((faq, index) => (
-            <div
-              key={index}
-              className="bg-[#1a1a1a]/60 backdrop-blur-sm rounded-2xl border border-[#b38b59]/20 overflow-hidden transition-all duration-300 hover:border-[#b38b59]/40"
-            >
+          <div className="space-y-4">
+            {faqs.map((faq, index) => (
+              <ScrollReveal 
+                key={index}
+                delay={0.2 + (index * 0.1)}
+              >
+                <div className="bg-[#1a1a1a]/40 backdrop-blur-sm rounded-2xl border border-[#b38b59]/20 overflow-hidden transition-all duration-500 hover:border-[#b38b59]/40 hover:shadow-lg hover:shadow-[#b38b59]/10"
+                >
               <button
                 onClick={() => toggleFAQ(index)}
                 className="w-full px-6 py-5 flex items-center justify-between text-left transition-colors duration-300 hover:bg-[#1a1a1a]/80"
@@ -71,10 +80,14 @@ export default function FAQ() {
                   {faq.answer}
                 </div>
               </div>
-            </div>
-          ))}
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </ParallaxSection>
+      
+      <SectionTransition variant="gradient" />
+    </>
   );
 }

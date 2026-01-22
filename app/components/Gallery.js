@@ -4,6 +4,9 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
+import ScrollReveal from './ScrollReveal';
+import ParallaxSection from './ParallaxSection';
+import SectionTransition from './SectionTransition';
 
 export default function Gallery({ onBookNowClick }) {
   const [activeCategory, setActiveCategory] = useState('All');
@@ -52,64 +55,81 @@ export default function Gallery({ onBookNowClick }) {
   };
 
   return (
-    <section id="gallery" className="py-20 relative bg-[#0a0a0a]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="serif-heading text-4xl sm:text-5xl font-bold text-[#b38b59] mb-4">Our Masterpieces</h2>
-          <p className="text-xl text-[#8B7355] max-w-2xl mx-auto mb-8">
-            Explore our collection of stunning henna designs and artistry
-          </p>
+    <>
+      <SectionTransition variant="bronze" />
+      
+      <ParallaxSection className="py-32 md:py-40 relative bg-gradient-to-b from-black via-[#0a0a0a] to-black">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ScrollReveal delay={0} className="text-center mb-16">
+            <div className="inline-block mb-6">
+              <span className="text-[#b38b59]/60 text-sm uppercase tracking-[0.3em] font-light">The Vision</span>
+            </div>
+            <h2 className="serif-heading text-5xl md:text-7xl font-black text-[#b38b59] mb-8 leading-tight">Our Masterpieces</h2>
+            <p className="text-xl md:text-2xl text-[#8B7355] max-w-3xl mx-auto leading-relaxed font-light mb-12">
+              Explore our collection of stunning henna designs and artistry
+            </p>
+            <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#b38b59] to-transparent mx-auto mb-12"></div>
 
-          <div className="flex flex-wrap justify-center gap-3 mb-8">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setActiveCategory(category)}
-                className={`px-6 py-2 rounded-full font-semibold text-sm transition-all duration-300 ${
-                  activeCategory === category
-                    ? 'bg-[#b38b59] text-black'
-                    : 'bg-[#1a1a1a] text-[#b38b59] border border-[#b38b59]/30 hover:bg-[#b38b59]/10'
-                }`}
+            <ScrollReveal delay={0.2} className="flex flex-wrap justify-center gap-3">
+              {categories.map((category, index) => (
+                <motion.button
+                  key={category}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.3 + (index * 0.05), duration: 0.3 }}
+                  onClick={() => setActiveCategory(category)}
+                  className={`px-6 py-3 rounded-full font-semibold text-sm transition-all duration-300 ${
+                    activeCategory === category
+                      ? 'bg-gradient-to-r from-[#b38b59] to-[#8B6F47] text-black shadow-lg shadow-[#b38b59]/30'
+                      : 'bg-[#1a1a1a]/60 text-[#b38b59] border border-[#b38b59]/30 hover:bg-[#b38b59]/10 hover:border-[#b38b59]/50'
+                  }`}
+                >
+                  {category}
+                </motion.button>
+              ))}
+            </ScrollReveal>
+          </ScrollReveal>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 mt-16">
+            {filteredImages.map((image, index) => (
+              <motion.div
+                key={image.id}
+                layout
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ 
+                  duration: 0.6, 
+                  delay: index * 0.05,
+                  ease: [0.25, 0.4, 0.25, 1]
+                }}
+                onClick={() => handleImageClick(image)}
+                className="group relative aspect-square rounded-2xl overflow-hidden cursor-pointer border-2 border-[#b38b59]/20 hover:border-[#b38b59]/60 transition-all duration-500 hover:shadow-xl hover:shadow-[#b38b59]/20"
               >
-                {category}
-              </button>
+                <Image
+                  src={image.src}
+                  alt={image.title}
+                  fill
+                  className="object-cover group-hover:scale-110 transition-transform duration-700"
+                  sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                />
+                
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center p-4">
+                  <p className="text-sm font-semibold text-[#b38b59]">{image.title}</p>
+                </div>
+              </motion.div>
             ))}
           </div>
-        </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {filteredImages.map((image) => (
-            <motion.div
-              key={image.id}
-              layout
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.3 }}
-              onClick={() => handleImageClick(image)}
-              className="group relative aspect-square rounded-xl overflow-hidden cursor-pointer border-2 border-[#b38b59]/20 hover:border-[#b38b59]/60 transition-all duration-300"
-            >
-              <Image
-                src={image.src}
-                alt={image.title}
-                fill
-                className="object-cover group-hover:scale-110 transition-transform duration-500"
-                sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              />
-              
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-4">
-                <p className="text-sm font-semibold text-[#b38b59]">{image.title}</p>
-              </div>
-            </motion.div>
-          ))}
+          {filteredImages.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-[#8B7355] text-lg">No images found in this category.</p>
+            </div>
+          )}
         </div>
-
-        {filteredImages.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-[#8B7355] text-lg">No images found in this category.</p>
-          </div>
-        )}
-      </div>
+      </ParallaxSection>
+      
+      <SectionTransition variant="gradient" />
 
       <AnimatePresence>
         {selectedImage && (

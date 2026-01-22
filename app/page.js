@@ -30,30 +30,20 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen relative">
+    <main className="min-h-screen relative overflow-x-hidden">
       <ParallaxBackground />
       <Navbar onBookNowClick={handleBookNowClick} />
-      <div className="pt-24 relative z-10">
+      <div className="relative z-10">
         <Hero />
-        <div className="py-10"></div>
         <About />
-        <div className="py-10"></div>
         <Services onBookNowClick={handleBookNowClick} />
-        <div className="py-10"></div>
         <Gallery onBookNowClick={handleBookNowClick} />
-        <div className="py-10"></div>
         <MeetTheArtist />
-        <div className="py-10"></div>
         <SafetyNotice />
-        <div className="py-10"></div>
         <Aftercare />
-        <div className="py-10"></div>
         <Testimonials />
-        <div className="py-10"></div>
         <FAQ />
-        <div className="py-10"></div>
         <InstagramSection />
-        <div className="py-10"></div>
         <Footer onBookNowClick={handleBookNowClick} />
       </div>
       <MobileBottomNav />

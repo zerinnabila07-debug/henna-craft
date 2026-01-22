@@ -1,12 +1,19 @@
 'use client';
 
 import { Shield, CheckCircle } from 'lucide-react';
+import ScrollReveal from './ScrollReveal';
+import ParallaxSection from './ParallaxSection';
+import SectionTransition from './SectionTransition';
 
 export default function SafetyNotice() {
   return (
-    <section className="py-16 relative bg-gradient-to-b from-[#1a1a1a] to-[#0a0a0a]">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gradient-to-r from-[#1a1a1a] to-[#2a2a2a] rounded-3xl p-8 md:p-12 border-2 border-[#b38b59]/30 shadow-2xl shadow-[#b38b59]/10">
+    <>
+      <SectionTransition variant="bronze" />
+      
+      <ParallaxSection className="py-24 md:py-32 relative bg-gradient-to-b from-[#1a1a1a] to-[#0a0a0a]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ScrollReveal delay={0}>
+            <div className="bg-gradient-to-r from-[#1a1a1a]/60 to-[#2a2a2a]/60 backdrop-blur-sm rounded-3xl p-8 md:p-12 border-2 border-[#b38b59]/30 shadow-2xl shadow-[#b38b59]/10">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
             <div className="flex-shrink-0">
               <div className="w-20 h-20 bg-gradient-to-br from-[#b38b59] to-[#8B6F47] rounded-full flex items-center justify-center shadow-lg">
@@ -43,8 +50,12 @@ export default function SafetyNotice() {
               </div>
             </div>
           </div>
+            </div>
+          </ScrollReveal>
         </div>
-      </div>
-    </section>
+      </ParallaxSection>
+      
+      <SectionTransition variant="gradient" />
+    </>
   );
 }
